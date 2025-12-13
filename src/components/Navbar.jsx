@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <>
@@ -7,12 +9,14 @@ function Navbar() {
             <img
               src="https://api.nasa.gov/assets/img/favicons/favicon-192.png"
               alt="logo-nasa"
-              className="h-[3rem]"
+              className="h-12"
             />
             <span className="text-xl font-bold">APOD NASA</span>
           </div>
           <div>
-            <span className="text-xl">Home</span>
+            <span className="text-xl">
+              <Link to="/">Home</Link>
+            </span>
           </div>
         </div>
       </div>
