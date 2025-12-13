@@ -95,7 +95,7 @@ function Home() {
           {/* Title */}
           <div>
             <span className="text-3xl">
-              Astronomy Picture of the Day (APOD)
+              Astronomy Picture of the Day (APOD) - FROM 2025
             </span>
           </div>
           <div className="text-[#A9B3C2] flex gap-4">
