@@ -68,7 +68,7 @@ function Home() {
         setApiResult(result);
       } catch (error) {
         console.error("Erro ao buscar dados da API:", error);
-        setApiResult(null); // Limpa o resultado em caso de erro
+        setApiResult(null);
       }
     },
     [API_KEY]
@@ -98,20 +98,17 @@ function Home() {
               Astronomy Picture of the Day (APOD)
             </span>
           </div>
-          {/* Buttons Months */}
           <div className="text-[#A9B3C2] flex gap-4">
             {months_items.map((element, index) => {
               return (
                 <div
                   key={element.number}
-                  // Adicionado className condicional (ex: Tailwind)
                   className={
                     mounthSelect === element.number
                       ? "text-red-500 font-bold"
                       : ""
                   }
                 >
-                  {/* Usa <a> para recarregar com novo Query Param (mounthId) */}
                   <a href={`/?mounthId=${Number(element.number)}`}>
                     {element.name}
                   </a>
@@ -120,23 +117,20 @@ function Home() {
             })}
           </div>
         </div>
-        {/* Current */}
         <div className="flex items-center justify-between">
           <div className="text-3xl">
             <span className="text-[#A9B3C2]">Current month: </span>
             <span>
               {months_items.find((m) => m.number === mounthSelect)?.name ||
                 "N/A"}{" "}
-              - All ({mounthSelect})
+              - All
             </span>
           </div>
           <div>
             <button className="bg-[#5F2B8C]">Play to day</button>
           </div>
         </div>
-        {/* Divisor */}
         <hr className="border-[#3F3F3F]" />
-        {/* Cards */}
         <div className="grid grid-cols-3 gap-6">
           {apiResult === null && <p>Carregando mês {mounthSelect}...</p>}
           {apiResult &&
