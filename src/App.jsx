@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="container w-full h-full m-auto">
+      <div className="container w-full h-full m-auto mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/detail" element={<Detail />} />
