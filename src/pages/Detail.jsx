@@ -27,13 +27,21 @@ function Detail() {
 
   return (
     <div className="grid grid-cols-[auto_260px] gap-6">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap -2">
         <CardDetail data={apiResult} />
       </div>
       {/* */}
       <div className="bg-[#161616] p-4 rounded-lg pt-4">
         <div className="font-bold mb-4 text-center">Explanation</div>
-        <div className="text-[#A9B3C2]">Ver depois</div>
+        <div className="text-[#A9B3C2]">
+          {apiResult &&
+            typeof apiResult === "object" &&
+            !Array.isArray(apiResult) && (
+              <div>
+                <p>{apiResult.explanation}</p>
+              </div>
+            )}
+        </div>
       </div>
     </div>
   );

@@ -2,17 +2,12 @@ function CardDetail({ data }) {
   if (!data) {
     return <div>Loading details...</div>;
   }
-  console.log(data);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <div className="font-bold text-3xl">{data.title}</div>
-      <div>
-        <img
-          src={data.hdurl}
-          alt="image"
-          className="w-full h-full rounded-lg"
-        />
+      <div className="flex h-screen">
+        <img src={data.hdurl} alt="image" className="h-full rounded-lg" />
       </div>
       <div className="w-full justify-between text-[#A9B3C2] flex flex-row mb-4">
         <div className="grid">
@@ -20,10 +15,12 @@ function CardDetail({ data }) {
           <div>{data.date}</div>
         </div>
         <div>
-          <button className="bg-[#2B558C]">View HD</button>
+          <a href={data.hdurl} target="blank">
+            <button className="bg-[#2B558C]">View Full</button>
+          </a>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
