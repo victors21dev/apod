@@ -2,8 +2,8 @@ function Card(props) {
   // Image
   if (props.props.media_type === "image") {
     return (
-      <div>
-        <div>{props.props.title}</div>
+      <div className="cursor-pointer">
+        <div className="font-bold">{props.props.title}</div>
         <div
           className="bg-gray-700 shadow-lg overflow-hidden 
                           aspect-[16/9] flex items-center justify-center 
@@ -11,9 +11,12 @@ function Card(props) {
         >
           <img src={props.props.url} alt="image" />
         </div>
-        <div>
+        <div className="text-[#A9B3C2]">
           <div>
-            Copyright: <span>{props.props.copyright}</span>
+            {console.log(props.props.copyright)}
+            {props.props.copyright !== "undefined"
+              ? [<span>{props.props.copyright}</span>]
+              : null}
           </div>
           <div>{props.props.date}</div>
         </div>

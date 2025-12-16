@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AllMounth } from "../scripts/DateAPI";
@@ -18,7 +19,7 @@ const months_items = [
   { name: "December", number: 12 },
 ];
 
-export function getRangeByMonth(monthIndex) {
+function getRangeByMonth(monthIndex) {
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth() + 1;
@@ -99,7 +100,7 @@ function Home() {
             </span>
           </div>
           <div className="text-[#A9B3C2] flex gap-4">
-            {months_items.map((element, index) => {
+            {months_items.map((element) => {
               return (
                 <div
                   key={element.number}
@@ -132,7 +133,7 @@ function Home() {
         </div>
         <hr className="border-[#3F3F3F]" />
         <div className="grid grid-cols-3 gap-6">
-          {apiResult === null && <p>Carregando mês {mounthSelect}...</p>}
+          {apiResult === null && <p>Loading data month({mounthSelect})...</p>}
           {apiResult &&
             apiResult.map((element) => {
               return <Card props={element} />;
