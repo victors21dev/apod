@@ -10,7 +10,7 @@ function App() {
       <div className="container w-full h-full m-auto mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/detail" element={<Detail />} />
+          <Route path="/detail/:id" element={<Detail />} />
           <Route path="*" element={<h1>404 - Página Não Encontrada</h1>} />
         </Routes>
       </div>

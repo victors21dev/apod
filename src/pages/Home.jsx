@@ -3,56 +3,14 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AllMounth } from "../scripts/DateAPI";
 import Card from "../components/Card";
-
-const months_items = [
-  { name: "January", number: 1 },
-  { name: "February", number: 2 },
-  { name: "March", number: 3 },
-  { name: "April", number: 4 },
-  { name: "May", number: 5 },
-  { name: "June", number: 6 },
-  { name: "July", number: 7 },
-  { name: "August", number: 8 },
-  { name: "September", number: 9 },
-  { name: "October", number: 10 },
-  { name: "November", number: 11 },
-  { name: "December", number: 12 },
-];
-
-function getRangeByMonth(monthIndex) {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-  const currentDay = today.getDate();
-  const jsMonthIndex = monthIndex - 1;
-  const firstDayOfMonth = new Date(currentYear, jsMonthIndex, 1);
-  let lastDayOfMonth = new Date(currentYear, jsMonthIndex + 1, 0);
-
-  if (monthIndex >= currentMonth) {
-    if (monthIndex === currentMonth) {
-      lastDayOfMonth = new Date(currentYear, jsMonthIndex, currentDay);
-    } else {
-      lastDayOfMonth = today;
-    }
-  }
-  const formatDate = (date) => {
-    const y = 2025;
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  };
-
-  return {
-    firstDay: formatDate(firstDayOfMonth),
-    lastDay: formatDate(lastDayOfMonth),
-  };
-}
+import RangeByMonth from "../hooks/RangeByMonth";
+import months_items from "../data/Months";
 
 function Home() {
   const API_KEY = import.meta.env.VITE_API_KEY_PROJECT;
-  const [searchParams] = useSearchParams();
 
   // Date
+  const [searchParams] = useSearchParams();
   const mounthId = searchParams.get("mounthId");
   const mounth = new Date().getMonth() + 1;
   const initialMonth = mounthId ? Number(mounthId) : mounth;
@@ -72,12 +30,12 @@ function Home() {
         setApiResult(null);
       }
     },
-    [API_KEY]
+    [API_KEY],
   );
 
   useEffect(() => {
     if (mounthSelect < 1 || mounthSelect > 12) return;
-    const { firstDay, lastDay } = getRangeByMonth(mounthSelect);
+    const { firstDay, lastDay } = RangeByMonth(mounthSelect);
     fetchData(firstDay, lastDay);
   }, [mounthSelect, fetchData]);
 
