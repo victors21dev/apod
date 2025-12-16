@@ -7,17 +7,16 @@ import RangeByMonth from "../hooks/RangeByMonth";
 import months_items from "../data/Months";
 import { Link } from "react-router-dom";
 
-function DateNow() {
+function DateNowFunc() {
   const dateNow = new Date();
   const y = dateNow.getFullYear();
-  const m = dateNow.getMonth();
+  const m = dateNow.getMonth() + 1;
   const d = dateNow.getDate();
   return `${y}-${m}-${d}`;
 }
 
 function Home() {
   const API_KEY = import.meta.env.VITE_API_KEY_PROJECT;
-
   // Date
   const [searchParams] = useSearchParams();
   const mounthId = searchParams.get("mounthId");
@@ -95,7 +94,7 @@ function Home() {
             </span>
           </div>
           <div>
-            <Link to={`/detail/${DateNow()}`}>
+            <Link to={`/detail/${DateNowFunc()}`}>
               <button className="border-[#5F2B8C] border ">Play to day</button>
             </Link>
           </div>
