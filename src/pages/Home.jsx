@@ -5,6 +5,15 @@ import { AllMounth } from "../scripts/DateAPI";
 import Card from "../components/Card";
 import RangeByMonth from "../hooks/RangeByMonth";
 import months_items from "../data/Months";
+import { Link } from "react-router-dom";
+
+function DateNow() {
+  const dateNow = new Date();
+  const y = dateNow.getFullYear();
+  const m = dateNow.getMonth();
+  const d = dateNow.getDate();
+  return `${y}-${m}-${d}`;
+}
 
 function Home() {
   const API_KEY = import.meta.env.VITE_API_KEY_PROJECT;
@@ -30,7 +39,7 @@ function Home() {
         setApiResult(null);
       }
     },
-    [API_KEY],
+    [API_KEY]
   );
 
   useEffect(() => {
@@ -53,7 +62,7 @@ function Home() {
         <div>
           {/* Title */}
           <div>
-            <span className="text-3xl">
+            <span className="text-3xl font-bold">
               Astronomy Picture of the Day (APOD) - FROM 2025
             </span>
           </div>
@@ -78,7 +87,7 @@ function Home() {
         </div>
         <div className="flex items-center justify-between">
           <div className="text-3xl">
-            <span className="text-[#A9B3C2]">Current month: </span>
+            <span className="text-[#8d98a9]">Current month: </span>
             <span>
               {months_items.find((m) => m.number === mounthSelect)?.name ||
                 "N/A"}{" "}
@@ -86,7 +95,9 @@ function Home() {
             </span>
           </div>
           <div>
-            <button className="bg-[#5F2B8C]">Play to day</button>
+            <Link to={`/detail/${DateNow()}`}>
+              <button className="border-[#5F2B8C] border ">Play to day</button>
+            </Link>
           </div>
         </div>
         <hr className="border-[#3F3F3F]" />
