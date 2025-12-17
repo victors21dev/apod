@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Eye, Download, Signature, Calendar } from "lucide-react";
 
 function CardDetail({ data }) {
   const [image, setImage] = useState(null);
@@ -70,8 +71,16 @@ function CardDetail({ data }) {
       </div>
       <div className="w-full justify-between text-[#A9B3C2] flex flex-row mb-4">
         <div className="grid">
-          <div>{data.copyright}</div>
-          <div>{data.date}</div>
+          <div className={`flex ${data.copyright ? "" : "hidden"}`}>
+            <div>{data.copyright ? <Signature /> : ""}</div>
+            <div>{data.copyright}</div>
+          </div>
+          <div className="flex gap-2 h-fit items-center text-sm lg:text-lg">
+            <div>
+              <Calendar />
+            </div>
+            <div className="flex items-center">{data.date}</div>
+          </div>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 justify-end">
           <div className="flex justify-end items-end">
@@ -81,13 +90,27 @@ function CardDetail({ data }) {
               }}
               className="bg-[#2B558C] hover:bg-blue-800 text-white font-bold py-2 px-4 rounded text-sm lg:text-lg"
             >
-              {nameButtonView}
+              <div className="flex gap-2">
+                {nameButtonView === "Reload" ? (
+                  ""
+                ) : (
+                  <div>
+                    <Eye />
+                  </div>
+                )}
+                <div className="flex items-center">{nameButtonView}</div>
+              </div>
             </button>
           </div>
           <div>
             <a href={data.hdurl} target="_blank">
               <button className="bg-[#5F2B8C] hover:bg-purple-800 text-white font-bold py-2 px-4 rounded text-sm lg:text-lg">
-                Download
+                <div className="flex gap-2">
+                  <div>
+                    <Download />
+                  </div>
+                  <div className="flex items-center">Download</div>
+                </div>
               </button>
             </a>
           </div>

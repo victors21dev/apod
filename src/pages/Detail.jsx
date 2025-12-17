@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ImageToDate } from "../scripts/DateAPI";
 import CardDetail from "../components/CardDetail";
+import { Info } from "lucide-react";
 
 const detailCache = {};
 
@@ -56,7 +57,10 @@ function Detail() {
       </div>
       <div className="bg-[#161616] p-4 rounded-lg pt-4">
         <div className="font-bold mb-4 text-center text-sm lg:text-lg">
-          Explanation
+          <div className="flex justify-center items-center gap-2">
+            <Info />
+            Explanation
+          </div>
         </div>
         <div className="text-[#A9B3C2]">
           {apiResult &&

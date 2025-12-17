@@ -5,6 +5,7 @@ import Card from "../components/Card";
 import RangeByMonth from "../hooks/RangeByMonth";
 import months_items from "../data/Months";
 import { Link } from "react-router-dom";
+import { Play, CalendarDays, CircleX } from "lucide-react";
 
 function DateNowFunc() {
   const dateNow = new Date();
@@ -102,7 +103,17 @@ function Home() {
               statusListMonth === true ? "bg-red-500" : "bg-[#2B378C]"
             }`}
           >
-            {statusListMonth === true ? "Close" : "Choose month"}
+            {statusListMonth === true ? (
+              <div className="flex gap-2">
+                <CircleX />
+                <div className="flex items-center">Close</div>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <CalendarDays />
+                <div className="flex items-center">Choose month</div>
+              </div>
+            )}
           </button>
           <div
             className={`text-[#A9B3C2] lg:flex lg:gap-4 ${
@@ -139,7 +150,10 @@ function Home() {
           <div>
             <Link to={`/detail/${DateNowFunc()}`}>
               <button className="border-[#5F2B8C] border text-sm lg:text-lg">
-                Play to day
+                <div className="flex gap-2">
+                  <Play />
+                  <div className="flex items-center">Play to day</div>
+                </div>
               </button>
             </Link>
           </div>
