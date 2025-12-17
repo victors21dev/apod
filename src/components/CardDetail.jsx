@@ -28,25 +28,6 @@ function CardDetail({ data }) {
     setIsLoadingHD(false);
   };
 
-  const handleDownload = () => {
-    const downloadUrl = data.hdurl;
-
-    if (downloadUrl) {
-      const filename = `${data.title.replace(/\s/g, "_")}_${data.date}_HD.jpg`;
-
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.download = filename;
-
-      document.body.appendChild(link);
-      link.click();
-
-      document.body.removeChild(link);
-
-      console.log(`Download iniciado: ${filename}`);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-4">
       <div className="font-bold text-3xl">{data.title}</div>
@@ -104,14 +85,11 @@ function CardDetail({ data }) {
             </button>
           </div>
           <div>
-            <button
-              onClick={() => {
-                handleDownload();
-              }}
-              className="bg-[#5F2B8C] hover:bg-purple-800 text-white font-bold py-2 px-4 rounded"
-            >
-              Download
-            </button>
+            <a href={data.hdurl} target="_blank">
+              <button className="bg-[#5F2B8C] hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
+                Download
+              </button>
+            </a>
           </div>
         </div>
       </div>
