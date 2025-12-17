@@ -6,7 +6,9 @@ function Card(props) {
     return (
       <Link to={`/detail/${props.props.date}`}>
         <div className="cursor-pointer">
-          <div className="font-bold">{props.props.title}</div>
+          <div className="font-bold text-sm lg:text-lg">
+            {props.props.title}
+          </div>
           <div
             className="bg-gray-700 shadow-lg overflow-hidden 
                           aspect-video flex items-center justify-center 
@@ -17,10 +19,14 @@ function Card(props) {
           <div className="text-[#A9B3C2]">
             <div>
               {props.props.copyright !== "undefined"
-                ? [<span>{props.props.copyright}</span>]
+                ? [
+                    <span className="text-sm lg:text-lg">
+                      {props.props.copyright}
+                    </span>,
+                  ]
                 : null}
             </div>
-            <div>{props.props.date}</div>
+            <div className="text-sm lg:text-lg">{props.props.date}</div>
           </div>
         </div>
       </Link>
@@ -30,21 +36,21 @@ function Card(props) {
   if (props.props.media_type === "video") {
     return (
       <div>
-        <div>{props.props.title}</div>
+        <div className="font-bold text-sm lg:text-lg">{props.props.title}</div>
         <div
           className="bg-gray-700 shadow-lg overflow-hidden 
                           aspect-video flex items-center justify-center 
                           text-white text-lg font-bold hover:bg-gray-600 transition duration-300"
         >
           <iframe
-            width="560"
+            width="100%"
             height="315"
             src={props.props.url}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           ></iframe>
         </div>
         <div>
-          <div>{props.props.date}</div>
+          <div className="text-sm lg:text-lg">{props.props.date}</div>
         </div>
       </div>
     );

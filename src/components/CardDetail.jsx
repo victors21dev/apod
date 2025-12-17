@@ -29,14 +29,14 @@ function CardDetail({ data }) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="font-bold text-3xl">{data.title}</div>
-      <div className="flex h-screen relative">
+    <div className="flex flex-col gap-2 lg:gap-4">
+      <div className="font-bold text-md lg:text-3xl">{data.title}</div>
+      <div className="flex relative">
         {image && (
           <img
             src={image}
             alt="image"
-            className="h-full rounded-lg object-contain w-full"
+            className="lg:h-full rounded-lg object-contain lg:w-full"
             onLoad={handleImageLoad}
           />
         )}
@@ -73,20 +73,20 @@ function CardDetail({ data }) {
           <div>{data.copyright}</div>
           <div>{data.date}</div>
         </div>
-        <div className="flex gap-2">
-          <div>
+        <div className="flex flex-col lg:flex-row gap-2 justify-end">
+          <div className="flex justify-end items-end">
             <button
               onClick={() => {
                 handlePhotoHD();
               }}
-              className="bg-[#2B558C] hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+              className="bg-[#2B558C] hover:bg-blue-800 text-white font-bold py-2 px-4 rounded text-sm lg:text-lg"
             >
               {nameButtonView}
             </button>
           </div>
           <div>
             <a href={data.hdurl} target="_blank">
-              <button className="bg-[#5F2B8C] hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
+              <button className="bg-[#5F2B8C] hover:bg-purple-800 text-white font-bold py-2 px-4 rounded text-sm lg:text-lg">
                 Download
               </button>
             </a>
