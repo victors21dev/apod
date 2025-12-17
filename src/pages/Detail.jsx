@@ -17,7 +17,6 @@ function Detail() {
     if (!id) return;
 
     if (detailCache[id]) {
-      console.log(`Detalhe para a data ${id} carregado do CACHE.`);
       setApiResult(detailCache[id]);
       return;
     }
@@ -27,14 +26,12 @@ function Detail() {
       setApiResult(null);
 
       try {
-        console.log(`Buscando Detalhe para a data ${id} da API...`);
         const result = await ImageToDate(API_KEY, id);
 
         detailCache[id] = result;
 
         setApiResult(result);
       } catch (err) {
-        console.error("Erro ao buscar dados da API:", err);
         setApiResult(null);
       } finally {
         setIsLoading(false);

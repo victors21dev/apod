@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Navbar() {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isDetailPage = currentPath.startsWith("/detail");
+
   return (
     <>
       <div className="bg-[#2B378C]">
@@ -15,7 +20,7 @@ function Navbar() {
           </div>
           <div>
             <span className="text-[1rem] lg:text-xl">
-              <Link to="/">Home</Link>
+              <Link to="/">{isDetailPage ? "Back" : "Home"}</Link>
             </span>
           </div>
         </div>
