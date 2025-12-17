@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { CircleArrowLeft, Telescope } from "lucide-react";
+import "./style.css";
 
 function Navbar() {
   const location = useLocation();
@@ -9,7 +10,7 @@ function Navbar() {
 
   return (
     <>
-      <div className="bg-[#2B378C] sticky top-0 z-100">
+      <div className="glassEffect sticky top-0 z-100">
         <div className="container m-auto flex items-center justify-between px-4">
           <div className="flex items-center gap-4 py-2">
             <img
