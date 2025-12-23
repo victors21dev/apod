@@ -27,20 +27,31 @@ function Home() {
     async (mId) => {
       if (!API_KEY) return;
       const cacheKey = `apod_cache_2025_${mId}`;
+      const { firstDay, lastDay } = RangeByMonth(mId);
 
       try {
         const savedData = localStorage.getItem(cacheKey);
+
         if (savedData) {
-          setCurrentMonthData(JSON.parse(savedData));
-          return;
+          const parsedData = JSON.parse(savedData);
+          const lastEntryDate = parsedData[parsedData.length - 1]?.date;
+
+          if (lastEntryDate === lastDay) {
+            setCurrentMonthData(parsedData);
+            return;
+          }
+
+          setCurrentMonthData(parsedData);
+          console.log("Incomplete cache detected. Updating data...");
+        } else {
+          setCurrentMonthData(null);
         }
       } catch (e) {
         console.warn("Error reading cache", e);
+        setCurrentMonthData(null);
       }
 
       try {
-        setCurrentMonthData(null);
-        const { firstDay, lastDay } = RangeByMonth(mId);
         const result = await AllMounth(API_KEY, firstDay, lastDay);
 
         if (result) {
@@ -49,7 +60,7 @@ function Home() {
         }
       } catch (error) {
         console.error("API error", error);
-        setCurrentMonthData([]);
+        if (!currentMonthData) setCurrentMonthData([]);
       }
     },
     [API_KEY]
