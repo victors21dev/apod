@@ -1,89 +1,67 @@
-import { useState, useEffect, useCallback, use } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import { AllMounth } from "../scripts/DateAPI";
 import Card from "../components/Card";
 import RangeByMonth from "../hooks/RangeByMonth";
 import months_items from "../data/Months";
-import { Link } from "react-router-dom";
 import { Play, CalendarDays, CircleX } from "lucide-react";
 
-function DateNowFunc() {
-  const dateNow = new Date();
-  const y = dateNow.getFullYear();
-  const m = dateNow.getMonth() + 1;
-  const d = dateNow.getDate();
+const getFormattedDate = (date = new Date()) => {
+  const y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
   return `${y}-${m}-${d}`;
-}
+};
 
 function Home() {
   const API_KEY = import.meta.env.VITE_API_KEY_PROJECT;
-  const [cachedResults, setCachedResults] = useState({});
-  const [currentMonthData, setCurrentMonthData] = useState(null);
   const [searchParams] = useSearchParams();
-  const mounthId = searchParams.get("mounthId");
-  const mounth = new Date().getMonth() + 1;
-  const initialMonth = mounthId ? Number(mounthId) : mounth;
-  const [mounthSelect, setMounthSelect] = useState(initialMonth);
+
+  const [currentMonthData, setCurrentMonthData] = useState(null);
   const [statusListMonth, setStatusListMonth] = useState(false);
 
-  const callApiAndCache = async (monthKey, first, last) => {
-    try {
-      setCurrentMonthData(null);
-      const result = await AllMounth(API_KEY, first, last);
-      setCachedResults((prevCache) => ({
-        ...prevCache,
-        [monthKey]: result,
-      }));
-      setCurrentMonthData(result);
-    } catch (error) {
-      console.error("Erro ao buscar dados da API:", error);
-      setCurrentMonthData(null);
-    }
-  };
+  const monthSelect =
+    Number(searchParams.get("mounthId")) || new Date().getMonth() + 1;
 
   const fetchData = useCallback(
-    (monthKey, first, last) => {
-      if (!API_KEY || !first || !last) return;
+    async (mId) => {
+      if (!API_KEY) return;
+      const cacheKey = `apod_cache_2025_${mId}`;
 
-      const cached = cachedResults[monthKey];
-
-      if (cached) {
-        setCurrentMonthData(cached);
-        return;
+      try {
+        const savedData = localStorage.getItem(cacheKey);
+        if (savedData) {
+          setCurrentMonthData(JSON.parse(savedData));
+          return;
+        }
+      } catch (e) {
+        console.warn("Error reading cache", e);
       }
 
-      // Se não estiver em cache, configura o timer
-      const timer = setTimeout(() => {
-        callApiAndCache(monthKey, first, last);
-      }, 4000);
+      try {
+        setCurrentMonthData(null);
+        const { firstDay, lastDay } = RangeByMonth(mId);
+        const result = await AllMounth(API_KEY, firstDay, lastDay);
 
-      return () => {
-        clearTimeout(timer);
-      };
+        if (result) {
+          localStorage.setItem(cacheKey, JSON.stringify(result));
+          setCurrentMonthData(result);
+        }
+      } catch (error) {
+        console.error("API error", error);
+        setCurrentMonthData([]);
+      }
     },
-    [API_KEY, cachedResults]
+    [API_KEY]
   );
 
-  const handleListMonth = () => {
-    setStatusListMonth((prevStatus) => !prevStatus);
-  };
-
   useEffect(() => {
-    if (mounthSelect < 1 || mounthSelect > 12) return;
-
-    const monthKey = String(mounthSelect);
-    const { firstDay, lastDay } = RangeByMonth(mounthSelect);
-    const cleanup = fetchData(monthKey, firstDay, lastDay);
-
-    return cleanup;
-  }, [mounthSelect, fetchData]);
-
-  useEffect(() => {
-    const urlMonth = mounthId ? Number(mounthId) : mounth;
-    if (urlMonth !== mounthSelect) {
-      setMounthSelect(urlMonth);
+    if (monthSelect >= 1 && monthSelect <= 12) {
+      fetchData(monthSelect);
     }
-  }, [mounthId, mounth, mounthSelect]);
+  }, [monthSelect, fetchData]);
+
+  const handleListMonth = () => setStatusListMonth((prev) => !prev);
 
   return (
     <>
@@ -96,25 +74,24 @@ function Home() {
             <div>FROM 2025</div>
           </div>
           <button
-            onClick={() => {
-              handleListMonth();
-            }}
+            onClick={handleListMonth}
             className={`lg:hidden text-sm w-fit p-2 ${
               statusListMonth === true ? "bg-red-500" : "bg-[#2B378C]"
             }`}
           >
             {statusListMonth === true ? (
-              <div className="flex gap-2">
+              <div className="flex gap-2 text-white">
                 <CircleX />
                 <div className="flex items-center">Close</div>
               </div>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex gap-2 text-white">
                 <CalendarDays />
                 <div className="flex items-center">Choose month</div>
               </div>
             )}
           </button>
+
           <div
             className={`text-[#A9B3C2] lg:flex lg:gap-4 ${
               statusListMonth === true ? "" : "hidden"
@@ -125,31 +102,32 @@ function Home() {
                 <div
                   key={element.number}
                   className={`${
-                    mounthSelect === element.number
+                    monthSelect === element.number
                       ? "text-red-500 font-bold"
                       : ""
                   }`}
                 >
-                  <a href={`/?mounthId=${Number(element.number)}`}>
+                  <Link to={`/?mounthId=${Number(element.number)}`}>
                     {element.name}
-                  </a>
+                  </Link>
                 </div>
               );
             })}
           </div>
         </div>
+
         <div className="flex flex-col gap-1 lg:flex-row lg:items-center lg:justify-between">
           <div className="text-sm lg:text-3xl">
             <span className="text-[#8d98a9]">Current month: </span>
             <span>
-              {months_items.find((m) => m.number === mounthSelect)?.name ||
+              {months_items.find((m) => m.number === monthSelect)?.name ||
                 "N/A"}{" "}
               - All
             </span>
           </div>
           <div>
-            <Link to={`/detail/${DateNowFunc()}`}>
-              <button className="border-[#5F2B8C] border text-sm lg:text-lg">
+            <Link to={`/detail/${getFormattedDate()}`}>
+              <button className="border-[#5F2B8C] border text-sm lg:text-lg p-2">
                 <div className="flex gap-2">
                   <Play />
                   <div className="flex items-center">Play to day</div>
@@ -158,15 +136,28 @@ function Home() {
             </Link>
           </div>
         </div>
+
         <hr className="border-[#3F3F3F]" />
+
         <div className="flex flex-col gap-4 w-full lg:grid lg:grid-cols-3 lg:gap-6">
           {currentMonthData === null && (
-            <p>Loading data month({mounthSelect})...</p>
+            <div className="col-span-3 text-center py-10 flex flex-col items-center gap-4">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-white"></div>
+              <p>Loading data month ({monthSelect})...</p>
+              <p className="text-xs text-gray-500 italic text-balance">
+                The NASA API may take some time to respond for the entire month.
+              </p>
+            </div>
           )}
           {currentMonthData &&
             currentMonthData.map((element) => {
               return <Card key={element.date} props={element} />;
             })}
+          {currentMonthData && currentMonthData.length === 0 && (
+            <p className="col-span-3 text-center py-10 text-red-400">
+              No data found or API error.
+            </p>
+          )}
         </div>
       </div>
     </>
