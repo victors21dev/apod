@@ -17,7 +17,7 @@ function Card({ props: element }) {
           <div className="shadow-lg overflow-hidden aspect-video relative">
             {!isImageLoaded && (
               <div className="absolute inset-0 w-full h-full bg-gray-700 animate-pulse flex items-center justify-center">
-                <p className="text-white text-sm">Carregando Foto...</p>
+                <p className="text-white text-sm">Loading photo...</p>
               </div>
             )}
 
