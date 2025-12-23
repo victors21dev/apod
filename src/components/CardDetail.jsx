@@ -44,7 +44,7 @@ function CardDetail({ data }) {
 
         {isLoadingHD && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-75 rounded-lg">
-            <p className="text-white text-lg mb-4">Carregando em HD...</p>
+            <p className="text-white text-lg mb-4">Loading in HD...</p>
 
             <svg
               className="animate-spin h-10 w-10 text-white"
